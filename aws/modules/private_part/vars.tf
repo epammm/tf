@@ -4,11 +4,11 @@ variable "environment" {}
 
 variable "vpc_id" {}
 
-variable "priv_subnets" {
+variable "subnets" {
   type = "list"
 }
 
-variable "availability_zones" {
+variable "az" {
   type = "list"
 }
 

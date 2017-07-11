@@ -22,8 +22,8 @@ module "nat_eip" {
 module "public_part" {
   source       = "./modules/public_part"
   vpc_id       = "${module.vpc.vpc_id}"
-  public_az    = "${var.public_az}"
-  pub_subnets  = "${var.public_subnets}"
+  az           = "${var.public_az}"
+  subnets      = "${var.public_subnets}"
   project_name = "${var.project_name}"
   environment  = "${var.environment}"
 }
@@ -32,11 +32,43 @@ module "public_part" {
 module "private_part" {
   source            = "./modules/private_part"
   vpc_id            = "${module.vpc.vpc_id}"
-  private_az        = "${var.private_az}"
-  priv_subnets      = "${var.private_subnets}"
+  az                = "${var.private_az}"
+  subnets           = "${var.private_subnets}"
   project_name      = "${var.project_name}"
   environment       = "${var.environment}"
   eip_id            = "${module.nat_eip.eip_id}"
   nat_public_subnet = "${module.public_part.nat_public_subnet}"
 }
 
+module "ec2_web" {
+  source             = "./modules/ec2_inst"
+  instance_count     = "${var.count_ec2_web}"
+  ami                = "${var.ami_web}"
+  project_name       = "${var.project_name}"
+  environment        = "${var.environment}"
+  key_name           = "${var.key_name}"
+  instance_type      = "${var.instance_type_ec2_web}"
+  subnet_id          = "${module.private_part.private_subnets}"
+  az                 = "${var.private_az}"
+  pub_ip_bool        = "${var.pub_ip_bool}"
+  security_group_ids = ["${module.sg_ec2_web.aws_security_group}"]
+  role       = "ec2_web"
+  user_data          = "${file("./scripts/web_bootstrap.sh")}"
+}
+
+module "sg_ec2_web" {
+  source                   = "./modules/security_group"
+  vpc_id                   = "${module.vpc.vpc_id}"
+  project_name             = "${var.project_name}"
+  environment              = "${var.environment}"
+  sg_name                  = "${var.sg_name}"
+  sg_description           = "${var.sg_description}"
+  start_range_ingress_port = "${var.start_range_ingress_port}"
+  end_range_ingress_port   = "${var.end_range_ingress_port}"
+  ingress_protocol         = "${var.ingress_protocol}"
+  ingress_cidr_blocks      = "${var.ingress_cidr_blocks}"
+  start_range_egress_port  = "${var.start_range_egress_port}"
+  end_range_egress_port    = "${var.end_range_egress_port}"
+  egress_protocol          = "${var.egress_protocol}"
+  egress_cidr_blocks       = "${var.egress_cidr_blocks}"
+}
