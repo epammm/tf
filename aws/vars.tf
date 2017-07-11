@@ -49,7 +49,7 @@ variable "private_subnets" {
 
 variable "sg_name" {
   description = "Name of security group."
-  default     = "elb_sg"
+  default     = "ec2-web"
 }
 
 variable "sg_description" {
@@ -59,12 +59,12 @@ variable "sg_description" {
 
 variable "start_range_ingress_port" {
   description = "Start range port for ingress rules (or certain ports)"
-  default     = [80, 443, 500]
+  default     = [80, 443]
 }
 
 variable "end_range_ingress_port" {
   description = "End range port for ingress rules (or certain ports)"
-  default     = [80, 443, 1024]
+  default     = [80, 443]
 }
 
 variable "ingress_protocol" {
@@ -74,7 +74,7 @@ variable "ingress_protocol" {
 
 variable "ingress_cidr_blocks" {
   description = "List of cidr blocks for ingress rules"
-  default     = ["0.0.0.0/0", "1.1.1.0/24"]
+  default     = ["213.184.243.0/24", "217.21.56.0/24", "217.21.63.0/24", "213.184.231.0/24", "86.57.255.88/29", "194.158.197.0/29"]
 }
 
 variable "start_range_egress_port" {
