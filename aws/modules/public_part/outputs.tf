@@ -1,3 +1,3 @@
 output "nat_public_subnet" {
-  value = "${aws_subnet.subnets.0.id}"
+  value = "${aws_subnet.pub_subnets.0.id}"
 }

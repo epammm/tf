@@ -1,14 +1,14 @@
 # Create public subnets
-resource "aws_subnet" "subnets" {
-  count             = "${length(var.subnets)}"
+resource "aws_subnet" "pub_subnets" {
+  count             = "${length(var.pub_subnets)}"
   vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${element(var.subnets, count.index)}"
+  cidr_block        = "${element(var.pub_subnets, count.index)}"
   availability_zone = "${element(var.availability_zones, count.index)}"
 
   tags {
     Name    = "${var.project_name}_${var.environment}_public_${count.index}"
     project = "${var.project_name}"
-    role    = "subnet-pub${count.index}"
+    role    = "subnet_public_${count.index}"
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_route" "public_route" {
 
 # Associate public subnets to public route table
 resource "aws_route_table_association" "public_subnet_association" {
-  subnet_id      = "${element(aws_subnet.subnets.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.pub_subnets.*.id, count.index)}"
   route_table_id = "${aws_route_table.public_route_table.id}"
-  count          = "${length(var.subnets)}"
+  count          = "${length(var.pub_subnets)}"
 }

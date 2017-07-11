@@ -4,7 +4,7 @@ variable "environment" {}
 
 variable "vpc_id" {}
 
-variable "subnets" {
+variable "pub_subnets" {
   type = "list"
 }
 
