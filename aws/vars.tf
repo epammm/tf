@@ -44,6 +44,56 @@ variable "public_subnets" {
 }
 
 variable "private_subnets" {
-  description = "List of private subnets."
+  
   default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+}
+
+variable "sg_name" {
+  description = "Name of security group."
+  default = "elb_sg"
+}
+
+variable "sg_description" {
+  description = "Description for security group."
+  default = "Allow HTTP and HTTPS traffic"
+}
+
+variable "start_range_ingress_port" {
+  description = "Start range port for ingress rules (or certain ports)"
+  default = [80, 443, 500]
+}
+
+variable "end_range_ingress_port" {
+  description = "End range port for ingress rules (or certain ports)"
+  default = [80, 443, 1024]
+}
+
+variable "ingress_protocol" {
+  description = "ingress ports protocol"
+  default = "tcp"
+}
+
+variable "ingress_cidr_blocks" {
+  description = "List of cidr blocks for ingress rules"
+  default = ["0.0.0.0/0", "1.1.1.0/24"]
+}
+
+variable "start_range_egress_port" {
+  description = "Start range port for egress rules (or certain ports)"
+  default = [0]
+}
+
+variable "end_range_egress_port" {
+  description = "End range port for egress rules (or certain ports)"
+  default = [0]
+}
+
+variable "egress_protocol" {
+  description = "egress ports protocol"
+  default = "-1"
+}
+
+variable "egress_cidr_blocks" {
+  description = "List of cidr blocks for egress rules"
+  default = ["0.0.0.0/0"]
 }

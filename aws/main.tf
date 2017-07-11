@@ -23,7 +23,7 @@ module "public_part" {
   source             = "./modules/public_part"
   vpc_id             = "${module.vpc.vpc_id}"
   availability_zones = "${var.public_az}"
-  pub_subnets            = "${var.public_subnets}"
+  pub_subnets        = "${var.public_subnets}"
   project_name       = "${var.project_name}"
   environment        = "${var.environment}"
 }
@@ -39,3 +39,8 @@ module "private_part" {
   eip_id             = "${module.nat_eip.eip_id}"
   nat_public_subnet  = "${module.public_part.nat_public_subnet}"
 }
+
+
+
+
+
