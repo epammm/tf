@@ -1,3 +1,8 @@
+# Configure s3 bucket as backend for terraform
+terraform {
+  backend "s3" {}
+}
+
 # Specify the provider and access details
 provider "aws" {
   access_key = "${var.access_key}"
