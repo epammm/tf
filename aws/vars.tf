@@ -1,11 +1,9 @@
 variable "access_key" {
   description = "The AWS key pair to use for resources."
-  default     = "ENTER YOUR ACCESS KEY"
 }
 
 variable "secret_key" {
   description = "The AWS key pair to use for resources."
-  default     = "ENTER YOUR SECRET KEY"
 }
 
 variable "aws_region" {
@@ -20,12 +18,11 @@ variable "environment" {
 
 variable "project_name" {
   description = "The name of project."
-  default     = "dream"
 }
 
 variable "vpc_cidr" {
-  default     = "10.0.0.0/16"
   description = "The CIDR of the VPC."
+  default     = "10.0.0.0/16"
 }
 
 variable "public_az" {
@@ -44,12 +41,13 @@ variable "public_subnets" {
 }
 
 variable "private_subnets" {
-  default = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  description = "List of private subnets."
+  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
 
 variable "sg_name" {
   description = "Name of security group."
-  default     = "ec2-web"
+  default     = "default_sg"
 }
 
 variable "sg_description" {
@@ -97,27 +95,26 @@ variable "egress_cidr_blocks" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "public_key" {
+  description = "Public key for comnnecting to ec2 instances"
+}
+
 variable "instance_type_ec2_web" {
-  default     = "t2.micro"
   description = "The Instance Type."
+  default     = "t2.micro"
 }
 
 variable "ami_web" {
-  default     = "ami-a4c7edb2"
   description = "AMI"
+  default     = "ami-a4c7edb2"
 }
 
 variable "count_ec2_web" {
-  default     = "2"
   description = "Count of instances"
-}
-
-variable "key_name" {
-  default     = "kuzniatsou_us-east-1"
-  description = "The AWS key pair to use for resources."
+  default     = "2"
 }
 
 variable "pub_ip_bool" {
-  default     = "false"
   description = "Create public ip address for instance?"
+  default     = "false"
 }

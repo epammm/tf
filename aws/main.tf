@@ -2,7 +2,7 @@
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
-  region     = "${var.aws_region}"
+  region = "${var.aws_region}"
 }
 
 # Create the PVC
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 # Create EIP for NAT GateWay
-module "nat_eip" {
+module "eip" {
   source = "./modules/eip"
 }
 
@@ -36,26 +36,19 @@ module "private_part" {
   subnets           = "${var.private_subnets}"
   project_name      = "${var.project_name}"
   environment       = "${var.environment}"
-  eip_id            = "${module.nat_eip.eip_id}"
+  eip_id            = "${module.eip.eip_id}"
   nat_public_subnet = "${module.public_part.nat_public_subnet}"
 }
 
-module "ec2_web" {
-  source             = "./modules/ec2_inst"
-  instance_count     = "${var.count_ec2_web}"
-  ami                = "${var.ami_web}"
-  project_name       = "${var.project_name}"
-  environment        = "${var.environment}"
-  key_name           = "${var.key_name}"
-  instance_type      = "${var.instance_type_ec2_web}"
-  subnet_id          = "${module.private_part.private_subnets}"
-  az                 = "${var.private_az}"
-  pub_ip_bool        = "${var.pub_ip_bool}"
-  security_group_ids = ["${module.sg_ec2_web.aws_security_group}"]
-  role       = "ec2_web"
-  user_data          = "${file("./scripts/web_bootstrap.sh")}"
+# Create key pair for ec2 instances
+module "key_pair" {
+  source       = "./modules/key_pair"
+  project_name = "${var.project_name}"
+  environment  = "${var.environment}"
+  public_key   = "${var.public_key}"
 }
 
+# Create security group for web ec2 instances
 module "sg_ec2_web" {
   source                   = "./modules/security_group"
   vpc_id                   = "${module.vpc.vpc_id}"
@@ -71,4 +64,21 @@ module "sg_ec2_web" {
   end_range_egress_port    = "${var.end_range_egress_port}"
   egress_protocol          = "${var.egress_protocol}"
   egress_cidr_blocks       = "${var.egress_cidr_blocks}"
+}
+
+# Create web ec2 instances
+module "ec2_web" {
+  source             = "./modules/ec2_inst"
+  instance_count     = "${var.count_ec2_web}"
+  ami                = "${var.ami_web}"
+  project_name       = "${var.project_name}"
+  environment        = "${var.environment}"
+  key_name           = "${module.key_pair.ec2_key_pair}"
+  instance_type      = "${var.instance_type_ec2_web}"
+  subnet_id          = "${module.private_part.private_subnets}"
+  az                 = "${var.private_az}"
+  pub_ip_bool        = "${var.pub_ip_bool}"
+  security_group_ids = ["${module.sg_ec2_web.aws_security_group}"]
+  role               = "ec2_web"
+  user_data          = "${file("./scripts/web_bootstrap.sh")}"
 }
