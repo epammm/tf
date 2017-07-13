@@ -118,3 +118,53 @@ variable "pub_ip_bool" {
   description = "Create public ip address for instance?"
   default     = "false"
 }
+
+variable "instance_balancing_port" {
+  description = "The port on the instance to route to"
+  default     = 80
+}
+
+variable "instance_balancing_protocol" {
+  description = "The protocol to use to the instance. Valid values are HTTP, HTTPS, TCP, or SSL"
+  default     = "http"
+}
+
+variable "listen_lb_port" {
+  description = "The port to listen on for the load balancer"
+  default     = 80
+}
+
+variable "listen_lb_protocol" {
+  description = "The protocol to listen on. Valid values are HTTP, HTTPS, TCP, or SSL"
+  default     = "http"
+}
+
+variable "elb_cross_zone_bool" {
+  description = "Enable cross-zone load balancing?"
+  default     = "true"
+}
+
+variable "elb_healthy_threshold" {
+  description = "The number of checks before the instance is declared healthy"
+  default     = 2
+}
+
+variable "elb_unhealthy_threshold" {
+  description = "The number of checks before the instance is declared unhealthy"
+  default     = 2
+}
+
+variable "elb_health_check_timeout" {
+  description = "The length of time before the check times out"
+  default     = 3
+}
+
+variable "elb_health_check_target" {
+  description = "The target of the check"
+  default     = "HTTP:80/"
+}
+
+variable "elb_health_check_interval" {
+  description = "The interval between elb checks"
+  default     = 30
+}

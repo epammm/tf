@@ -14,7 +14,7 @@ public_az = ["us-east-1a", "us-east-1b"]
 
 private_az = ["us-east-1a", "us-east-1b"]
 
-public_subnets = ["10.0.1.0/24"]
+public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 
 private_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
@@ -48,6 +48,24 @@ count_ec2_web = "2"
 
 pub_ip_bool = "false"
 
+instance_port         = 80
 
+instance_protocol     = "http"
+
+lb_port               = 80
+
+lb_protocol           = "http"
+
+elb_cross_zone_bool   = "true"
+
+healthy_threshold     = 2
+
+unhealthy_threshold   = 2
+
+health_check_timeout  = 3
+
+health_check_target   = "HTTP:80/"
+
+health_check_interval = 30
 
 

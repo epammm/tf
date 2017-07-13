@@ -14,5 +14,3 @@ variable "region" {
 variable "bucket" {
   description = "Type of environment"
 }
-
-
