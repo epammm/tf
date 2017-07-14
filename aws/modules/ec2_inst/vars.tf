@@ -10,8 +10,6 @@ variable "project_name" {}
 
 variable "environment" {}
 
-variable "user_data" {}
-
 variable "pub_ip_bool" {}
 
 variable "role" {}

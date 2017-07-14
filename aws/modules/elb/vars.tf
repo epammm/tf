@@ -6,9 +6,9 @@ variable "subnet_id" {
   type = "list"
 }
 
-variable "instance_id" {
-  type = "list"
-}
+# variable "instance_id" {
+#   type = "list"
+# }
 
 variable "instance_port" {}
 

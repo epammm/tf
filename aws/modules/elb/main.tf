@@ -1,9 +1,10 @@
 # Create ELB
 resource "aws_elb" "elb" {
-  name                      = "${var.project_name}-${var.environment}-${var.role}"
-  security_groups           = ["${var.security_group_ids}"]
-  subnets                   = ["${var.subnet_id}"]
-  instances                 = ["${var.instance_id}"]
+  name            = "${var.project_name}-${var.environment}-${var.role}"
+  security_groups = ["${var.security_group_ids}"]
+  subnets         = ["${var.subnet_id}"]
+
+  #instances                 = ["${var.instance_id}"]
   cross_zone_load_balancing = "${var.elb_cross_zone_bool}"
 
   listener {

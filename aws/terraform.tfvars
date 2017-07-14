@@ -44,8 +44,6 @@ instance_type_ec2_web = "t2.micro"
 
 ami_web = "ami-a4c7edb2"
 
-count_ec2_web = "2"
-
 pub_ip_bool = "false"
 
 instance_port         = 80
