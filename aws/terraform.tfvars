@@ -1,12 +1,16 @@
+########## General project variables ##########
+
 access_key = "YOUR ACCESS KEY"
 
 secret_key = "YOUR SECRET KEY"
 
 aws_region = "us-east-1"
 
+project_name = "dream"
+
 environment = "stage"
 
-project_name = "dream"
+########## VPC variables ##########
 
 vpc_cidr = "10.0.0.0/16"
 
@@ -19,6 +23,8 @@ public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 private_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
 public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA2gT7K9dU1SiqGkvoJC6yBVDk3B6bZkPMWAwNwCMykadM3XDYsM7rRZ2pHWPxNw5G2hfFJ2715ol+F703u+AqJSTgno4y20Vpq38E3fq1BMw7M1mpl2G2k4ongTbooiEllCIDzS894nCaIAGsDAinht7Dnqt+Y+ZplEvjgd9VLsIUPMKKzYeLTDZfDqHKc4sBdeXO8tOvZabvI0ux0EwXD4yVG6syF7FcuK9j09hYHHsVNE2fg0ihWpJ0tetJVEJb5wpv29M+4qBuov5CIrLfAsNAg/I+ZrGYQoVEvYKf+uTIJ4PkTDpZRFSR+o9QZT/ofHTzjFNKosQLFPM4VgXwsw== rsa-key-20170712"
+
+########## Security groups variables ##########
 
 sg_name = "ec2-web"
 

@@ -125,7 +125,7 @@ module "sg_elb_web" {
 
 #Create web ELB
 module "elb_web" {
-  source                = "./modules/elb"
+  source                = "./modules/elb_asg"
   project_name          = "${var.project_name}"
   environment           = "${var.environment}"
   subnet_id             = ["${module.public_part.public_subnets}"]
@@ -161,7 +161,7 @@ module "asg_web" {
   adjustment_type               = "${var.adjustment_type}"
   metric_aggregation_type       = "${var.metric_aggregation_type}"
   estimated_instance_warmup     = "${var.estimated_instance_warmup}"
-  increase_scaling_adjustment   = "${var.increase_scaling_adjustment}}"
+  increase_scaling_adjustment   = "${var.increase_scaling_adjustment}"
   decrease_scaling_adjustment   = "${var.decrease_scaling_adjustment}"
   increase_interval_lower_bound = "${var.increase_interval_lower_bound}"
   decrease_interval_upper_bound = "${var.decrease_interval_upper_bound}"
@@ -175,26 +175,43 @@ module "web_requests_alarm" {
   role                  = "${var.web_request_alarm_role}"
   comparison_operator   = "${var.comparison_operator}"
   evaluation_periods    = "${var.evaluation_periods}"
-  metric_name           =  "${var.web_request_alarm_metric_name}" 
-  namespace             = "${var.web_request_alarm_namespace}"  
+  metric_name           = "${var.web_request_alarm_metric_name}"
+  namespace             = "${var.web_request_alarm_namespace}"
   cloud_watch_period    = "${var.cloud_watch_period}"
-  statistic_type        = "${var.statistic_type}" 
-  cloud_watch_threshold = "${var.cloud_watch_threshold}" 
-  is_actions_enabled    = "${var.is_actions_enabled}" 
+  statistic_type        = "${var.statistic_type}"
+  cloud_watch_threshold = "${var.cloud_watch_threshold}"
+  is_actions_enabled    = "${var.is_actions_enabled}"
   elb_name              = "${module.elb_web.elb_name}"
-  alarm_description     = "${var.web_request_alarm_description}" 
+  alarm_description     = "${var.web_request_alarm_description}"
   alarm_actions         = "${module.asg_web.increase_policy}"
   ok_actions            = "${module.asg_web.decrease_policy}"
 }
 
+# Create instance for Jenkins server
+module "ec2_jenkins" {
+  source             = "./modules/ec2_inst"
+  instance_count     = "${var.jenkins_instance_count}"
+  ami                = "${var.jenkins_ami}"
+  project_name       = "${var.project_name}"
+  environment        = "${var.environment}"
+  key_name           = "${module.key_pair.ec2_key_pair}"
+  instance_type      = "${var.jenkins_instance_type_ec2}"
+  subnet_id          = "${module.private_part.private_subnets}"
+  az                 = "${var.private_az}"
+  pub_ip_bool        = "true"
+  security_group_ids = ["${module.sg_ec2_vpc.aws_security_group}"]
+  role               = "jenkins"
+}
+
 #Create service elb
 module "elb_srv" {
-  source                = "./modules/elb"
+  source                = "./modules/elb_ec2"
   project_name          = "${var.project_name}"
   environment           = "${var.environment}"
   subnet_id             = ["${module.public_part.public_subnets}"]
   security_group_ids    = ["${module.sg_elb_web.aws_security_group}"]
   instance_port         = "${var.srv_instance_balancing_port}"
+  instance_id           = "${module.ec2_jenkins.instance_id}"
   instance_protocol     = "${var.srv_instance_balancing_protocol}"
   lb_port               = "${var.srv_listen_lb_port}"
   lb_protocol           = "${var.srv_listen_lb_protocol}"
@@ -202,34 +219,13 @@ module "elb_srv" {
   healthy_threshold     = "${var.elb_healthy_threshold}"
   unhealthy_threshold   = "${var.elb_unhealthy_threshold}"
   health_check_timeout  = "${var.elb_health_check_timeout}"
-  health_check_target   = "${var.web_elb_health_check_target}"
+  health_check_target   = "${var.srv_elb_health_check_target}"
   health_check_interval = "${var.elb_health_check_interval}"
   role                  = "${var.srv_elb_role}"
 }
 
-#Create application autoscaling group
-module "asg_app" {
-  source                        = "./modules/asg"
-  project_name                  = "${var.project_name}"
-  environment                   = "${var.environment}"
-  role                          = "asg-app"
-  image_id                      = "${var.ami_web}"
-  instance_type                 = "${var.instance_type_ec2_web}"
-  key_name                      = "${module.key_pair.ec2_key_pair}"
-  security_group_ids            = ["${module.sg_ec2_vpc.aws_security_group}"]
-  subnet_id                     = "${module.private_part.private_subnets}"
-  pub_ip_bool                   = "${var.pub_ip_bool}"
-  min_asg_size                  = 2
-  max_asg_size                  = 4
-  load_balancers_name           = ["${module.elb_srv.elb_name}"]
-  adjustment_type               = "ChangeInCapacity"
-  metric_aggregation_type       = "Average"
-  estimated_instance_warmup     = 90
-  increase_scaling_adjustment   = 1
-  decrease_scaling_adjustment   = -1
-  increase_interval_lower_bound = 0
-  decrease_interval_upper_bound = 0
-}
+
+
 
 #Create Cloud Watch HTTP request count alarm
 module "srv_requests_alarm" {
@@ -239,14 +235,14 @@ module "srv_requests_alarm" {
   role                  = "${var.srv_request_alarm_role}"
   comparison_operator   = "${var.comparison_operator}"
   evaluation_periods    = "${var.evaluation_periods}"
-  metric_name           =  "${var.srv_request_alarm_metric_name}" 
-  namespace             = "${var.srv_request_alarm_namespace}"  
+  metric_name           = "${var.srv_request_alarm_metric_name}"
+  namespace             = "${var.srv_request_alarm_namespace}"
   cloud_watch_period    = "${var.cloud_watch_period}"
-  statistic_type        = "${var.statistic_type}" 
-  cloud_watch_threshold = "${var.cloud_watch_threshold}" 
-  is_actions_enabled    = "${var.is_actions_enabled}" 
+  statistic_type        = "${var.statistic_type}"
+  cloud_watch_threshold = "${var.cloud_watch_threshold}"
+  is_actions_enabled    = "${var.is_actions_enabled}"
   elb_name              = "${module.elb_web.elb_name}"
-  alarm_description     = "${var.srv_request_alarm_description}" 
+  alarm_description     = "${var.srv_request_alarm_description}"
   alarm_actions         = "${module.asg_web.increase_policy}"
   ok_actions            = "${module.asg_web.decrease_policy}"
 }

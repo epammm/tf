@@ -157,7 +157,7 @@ variable "vpc_egress_cidr_blocks" {
 
 variable "elb_sg_name" {
   description = "Name of security group for ELB."
-  default     = "vpc_sg"
+  default     = "elb_sg"
 }
 
 variable "elb_sg_description" {
@@ -219,6 +219,23 @@ variable "bastion_instance_type_ec2" {
   default     = "t2.micro"
 }
 
+### Jenkins server ###
+
+variable "jenkins_instance_count" {
+  description = "Number of instance for Jenkins server"
+  default     = 1
+}
+
+variable "jenkins_ami" {
+  description = "AMI for Jenkins server"
+  default     = "ami-a4c7edb2"
+}
+
+variable "jenkins_instance_type_ec2" {
+  description = "The Instance Type."
+  default     = "t2.micro"
+}
+
 ########## General ELB variables ##########
 
 variable "elb_cross_zone_bool" {
@@ -239,11 +256,6 @@ variable "elb_unhealthy_threshold" {
 variable "elb_health_check_timeout" {
   description = "The length of time before the check times out"
   default     = 3
-}
-
-variable "elb_health_check_target" {
-  description = "The target of the check"
-  default     = "HTTP:80/"
 }
 
 variable "elb_health_check_interval" {
@@ -280,11 +292,16 @@ variable "web_elb_role" {
   default     = "elb-web"
 }
 
+variable "web_elb_health_check_target" {
+  description = "The target of the check"
+  default     = "HTTP:80/"
+}
+
 ### Service ELB ###
 
 variable "srv_instance_balancing_port" {
   description = "The port on the instance to route to"
-  default     = 80
+  default     = 8080
 }
 
 variable "srv_instance_balancing_protocol" {
@@ -304,20 +321,15 @@ variable "srv_listen_lb_protocol" {
 
 variable "srv_elb_role" {
   description = "ELB role"
-  default     = "elb-web"
+  default     = "elb-srv"
+}
+
+variable "srv_elb_health_check_target" {
+  description = "The target of the check"
+  default     = "HTTP:80/"
 }
 
 ########## General Auto Scaling variables ##########
-
-variable "instance_type_ec2_web" {
-  description = "The Instance Type."
-  default     = "t2.micro"
-}
-
-variable "ami_web" {
-  description = "AMI"
-  default     = "ami-a4c7edb2"
-}
 
 variable "pub_ip_bool" {
   description = "Create public ip address for instance?"
@@ -363,6 +375,16 @@ variable "decrease_interval_upper_bound" {
 
 ### Web Auto Scaling Group ###
 
+variable "web_instance_type_ec2" {
+  description = "The Instance Type."
+  default     = "t2.micro"
+}
+
+variable "web_ami" {
+  description = "AMI"
+  default     = "ami-a4c7edb2"
+}
+
 variable "web_asg_role" {
   description = "Auto Scaling Group role"
   default     = "asg-web"
@@ -377,7 +399,6 @@ variable "web_max_asg_size" {
   description = "Max size of Auto Scaling Group"
   default     = 4
 }
-
 
 ########## General Cloud Watch variables ##########
 
