@@ -307,8 +307,6 @@ variable "srv_elb_role" {
   default     = "elb-web"
 }
 
-############################################### TO BE CONTINUE ####################################
-
 ########## General Auto Scaling variables ##########
 
 variable "instance_type_ec2_web" {
@@ -324,4 +322,137 @@ variable "ami_web" {
 variable "pub_ip_bool" {
   description = "Create public ip address for instance?"
   default     = "false"
+}
+
+variable "adjustment_type" {
+  description = "Auto Scaling Group adjustment type"
+  default     = "ChangeInCapacity"
+}
+
+variable "metric_aggregation_type" {
+  description = "Auto Scaling Group metric aggregation type"
+  default     = "Average"
+}
+
+variable "estimated_instance_warmup" {
+  description = ""
+  default     = 60
+}
+
+variable "increase_scaling_adjustment" {
+  description = ""
+  default     = 1
+}
+
+variable "decrease_scaling_adjustment" {
+  description = ""
+  default     = -1
+}
+
+variable "increase_interval_lower_bound" {
+  description = ""
+  default     = 0
+}
+
+variable "decrease_interval_upper_bound" {
+  description = ""
+  default     = 0
+}
+
+########## Custom Auto Scaling variables ##########
+
+### Web Auto Scaling Group ###
+
+variable "web_asg_role" {
+  description = "Auto Scaling Group role"
+  default     = "asg-web"
+}
+
+variable "web_min_asg_size" {
+  description = "Min size of Auto Scaling Group"
+  default     = 2
+}
+
+variable "web_max_asg_size" {
+  description = "Max size of Auto Scaling Group"
+  default     = 4
+}
+
+
+########## General Cloud Watch variables ##########
+
+variable "comparison_operator" {
+  description = ""
+  default     = "GreaterThanOrEqualToThreshold"
+}
+
+variable "evaluation_periods" {
+  description = ""
+  default     = 1
+}
+
+variable "cloud_watch_period" {
+  description = ""
+  default     = 60
+}
+
+variable "statistic_type" {
+  description = ""
+  default     = "Sum"
+}
+
+variable "cloud_watch_threshold" {
+  description = ""
+  default     = 1000
+}
+
+variable "is_actions_enabled" {
+  description = ""
+  default     = "true"
+}
+
+########## Custom Cloud Watch variables ##########
+
+### Web Request Count alarm ###
+
+variable "web_request_alarm_role" {
+  description = ""
+  default     = "web_request_alarm"
+}
+
+variable "web_request_alarm_metric_name" {
+  description = ""
+  default     = "RequestCount"
+}
+
+variable "web_request_alarm_namespace" {
+  description = ""
+  default     = "AWS/ELB"
+}
+
+variable "web_request_alarm_description" {
+  description = ""
+  default     = "Web HTTP Request alarm"
+}
+
+### Service Request Count alarm ###
+
+variable "srv_request_alarm_role" {
+  description = ""
+  default     = "srv_request_alarm"
+}
+
+variable "srv_request_alarm_metric_name" {
+  description = ""
+  default     = "RequestCount"
+}
+
+variable "srv_request_alarm_namespace" {
+  description = ""
+  default     = "AWS/ELB"
+}
+
+variable "srv_request_alarm_description" {
+  description = ""
+  default     = "Service HTTP Request alarm"
 }

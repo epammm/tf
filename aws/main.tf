@@ -143,8 +143,6 @@ module "elb_web" {
   role                  = "${var.web_elb_role}"
 }
 
-############ TO BE CONTINUE ###########
-
 #Create web autoscaling group
 module "asg_web" {
   source                        = "./modules/asg"
@@ -160,31 +158,31 @@ module "asg_web" {
   min_asg_size                  = "${var.web_min_asg_size}"
   max_asg_size                  = "${var.web_max_asg_size}"
   load_balancers_name           = ["${module.elb_web.elb_name}"]
-  adjustment_type               = "ChangeInCapacity"
-  metric_aggregation_type       = "Average"
-  estimated_instance_warmup     = 60
-  increase_scaling_adjustment   = 1
-  decrease_scaling_adjustment   = -1
-  increase_interval_lower_bound = 0
-  decrease_interval_upper_bound = 0
+  adjustment_type               = "${var.adjustment_type}"
+  metric_aggregation_type       = "${var.metric_aggregation_type}"
+  estimated_instance_warmup     = "${var.estimated_instance_warmup}"
+  increase_scaling_adjustment   = "${var.increase_scaling_adjustment}}"
+  decrease_scaling_adjustment   = "${var.decrease_scaling_adjustment}"
+  increase_interval_lower_bound = "${var.increase_interval_lower_bound}"
+  decrease_interval_upper_bound = "${var.decrease_interval_upper_bound}"
 }
 
 #Create Cloud Watch HTTP request count alarm
-module "requests_alarm" {
+module "web_requests_alarm" {
   source                = "./modules/elb_cw"
   project_name          = "${var.project_name}"
   environment           = "${var.environment}"
-  role                  = "web"
-  comparison_operator   = "GreaterThanOrEqualToThreshold"
-  evaluation_periods    = 1
-  metric_name           = "RequestCount"
-  namespace             = "AWS/ELB"
-  cloud_watch_period    = 60
-  statistic_type        = "Sum"
-  cloud_watch_threshold = 1000
-  is_actions_enabled    = "true"
+  role                  = "${var.web_request_alarm_role}"
+  comparison_operator   = "${var.comparison_operator}"
+  evaluation_periods    = "${var.evaluation_periods}"
+  metric_name           =  "${var.web_request_alarm_metric_name}" 
+  namespace             = "${var.web_request_alarm_namespace}"  
+  cloud_watch_period    = "${var.cloud_watch_period}"
+  statistic_type        = "${var.statistic_type}" 
+  cloud_watch_threshold = "${var.cloud_watch_threshold}" 
+  is_actions_enabled    = "${var.is_actions_enabled}" 
   elb_name              = "${module.elb_web.elb_name}"
-  alarm_description     = "HTTP Request alarm"
+  alarm_description     = "${var.web_request_alarm_description}" 
   alarm_actions         = "${module.asg_web.increase_policy}"
   ok_actions            = "${module.asg_web.decrease_policy}"
 }
@@ -234,21 +232,21 @@ module "asg_app" {
 }
 
 #Create Cloud Watch HTTP request count alarm
-module "app_requests_alarm" {
+module "srv_requests_alarm" {
   source                = "./modules/elb_cw"
   project_name          = "${var.project_name}"
   environment           = "${var.environment}"
-  role                  = "app"
-  comparison_operator   = "GreaterThanOrEqualToThreshold"
-  evaluation_periods    = 1
-  metric_name           = "RequestCount"
-  namespace             = "AWS/ELB"
-  cloud_watch_period    = 60
-  statistic_type        = "Sum"
-  cloud_watch_threshold = 1000
-  is_actions_enabled    = "true"
-  elb_name              = "${module.elb_srv.elb_name}"
-  alarm_description     = "HTTP Request to application"
+  role                  = "${var.srv_request_alarm_role}"
+  comparison_operator   = "${var.comparison_operator}"
+  evaluation_periods    = "${var.evaluation_periods}"
+  metric_name           =  "${var.srv_request_alarm_metric_name}" 
+  namespace             = "${var.srv_request_alarm_namespace}"  
+  cloud_watch_period    = "${var.cloud_watch_period}"
+  statistic_type        = "${var.statistic_type}" 
+  cloud_watch_threshold = "${var.cloud_watch_threshold}" 
+  is_actions_enabled    = "${var.is_actions_enabled}" 
+  elb_name              = "${module.elb_web.elb_name}"
+  alarm_description     = "${var.srv_request_alarm_description}" 
   alarm_actions         = "${module.asg_web.increase_policy}"
   ok_actions            = "${module.asg_web.decrease_policy}"
 }
