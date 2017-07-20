@@ -22,7 +22,7 @@ public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 
 private_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
-public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA2gT7K9dU1SiqGkvoJC6yBVDk3B6bZkPMWAwNwCMykadM3XDYsM7rRZ2pHWPxNw5G2hfFJ2715ol+F703u+AqJSTgno4y20Vpq38E3fq1BMw7M1mpl2G2k4ongTbooiEllCIDzS894nCaIAGsDAinht7Dnqt+Y+ZplEvjgd9VLsIUPMKKzYeLTDZfDqHKc4sBdeXO8tOvZabvI0ux0EwXD4yVG6syF7FcuK9j09hYHHsVNE2fg0ihWpJ0tetJVEJb5wpv29M+4qBuov5CIrLfAsNAg/I+ZrGYQoVEvYKf+uTIJ4PkTDpZRFSR+o9QZT/ofHTzjFNKosQLFPM4VgXwsw== rsa-key-20170712"
+public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgQbL/DAH3im1or944+LnggMIhCehgQf38KAc4prepTMfSewbAITjJsRA7K+FcNKghSWn+kNPzSHbC8SuN/xU6YC5lJWEIPhRI6tTVByVFkkRX3KebBpI0GF/eQzrJaYcaFz+l3UQ41BdTleZ8HhroCShvhztK7RHzecSfM4IwLbWrz30A/HTpOA++x6UBLf5+7iFUWSVk7xeOshCiSCn9yruPo8ap5Hd2DDPeYtup4N6Ut2Adbg84kT2S+YUcmD3EOIl8siV8I9LAmmTC3AR5C/yGAcEayyHhISnHXVD9mwNfx5caQ/gzuM6PB6OhJMlPaGv2kUPxtYIp6yOU9Kw/ vagrant@ansible.bm"
 
 ########## Security groups variables ##########
 

@@ -68,7 +68,7 @@ module "sg_bastion" {
   start_range_egress_port  = "${var.bastion_start_range_egress_port}"
   end_range_egress_port    = "${var.bastion_end_range_egress_port}"
   egress_protocol          = "${var.bastion_egress_protocol}"
-  egress_cidr_blocks       = "${var.bastion_ingress_cidr_blocks}"
+  egress_cidr_blocks       = "${var.bastion_egress_cidr_blocks}"
 }
 
 # Create bastion ec2 instance
@@ -198,7 +198,7 @@ module "ec2_jenkins" {
   instance_type      = "${var.jenkins_instance_type_ec2}"
   subnet_id          = "${module.private_part.private_subnets}"
   az                 = "${var.private_az}"
-  pub_ip_bool        = "true"
+  pub_ip_bool        = "false"
   security_group_ids = ["${module.sg_ec2_vpc.aws_security_group}"]
   role               = "jenkins"
 }

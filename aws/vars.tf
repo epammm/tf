@@ -120,12 +120,12 @@ variable "vpc_sg_description" {
 
 variable "vpc_start_range_ingress_port" {
   description = "Start range port for ingress rules in private network (or certain ports)"
-  default     = [22, 80, 443]
+  default     = [22, 80, 443, 8080]
 }
 
 variable "vpc_end_range_ingress_port" {
   description = "End range port for ingress rules in private network (or certain ports)"
-  default     = [22, 80, 443]
+  default     = [22, 80, 443, 8080]
 }
 
 variable "vpc_ingress_protocol" {
@@ -269,7 +269,7 @@ variable "elb_health_check_interval" {
 
 variable "web_instance_balancing_port" {
   description = "The port on the instance to route to"
-  default     = 80
+  default     = 8080
 }
 
 variable "web_instance_balancing_protocol" {
@@ -294,7 +294,7 @@ variable "web_elb_role" {
 
 variable "web_elb_health_check_target" {
   description = "The target of the check"
-  default     = "HTTP:80/"
+  default     = "HTTP:8080/"
 }
 
 ### Service ELB ###
