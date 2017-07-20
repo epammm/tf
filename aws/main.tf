@@ -140,7 +140,7 @@ module "elb_web" {
   health_check_timeout  = "${var.elb_health_check_timeout}"
   health_check_target   = "${var.web_elb_health_check_target}"
   health_check_interval = "${var.elb_health_check_interval}"
-  role                  = "${var.web_elb_role}"
+  role                  = "elb-web"
 }
 
 #Create web autoscaling group
@@ -221,7 +221,7 @@ module "elb_srv" {
   health_check_timeout  = "${var.elb_health_check_timeout}"
   health_check_target   = "${var.srv_elb_health_check_target}"
   health_check_interval = "${var.elb_health_check_interval}"
-  role                  = "${var.srv_elb_role}"
+  role                  = "elb-srv"
 }
 
 

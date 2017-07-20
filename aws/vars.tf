@@ -1,10 +1,10 @@
 ########## General project variables ##########
 variable "access_key" {
-  description = "The AWS key pair to use for resources."
+  description = "Access key for AWS user with programmatic access."
 }
 
 variable "secret_key" {
-  description = "The AWS key pair to use for resources."
+  description = "Secret key for AWS user with programmatic access."
 }
 
 variable "aws_region" {
@@ -68,11 +68,13 @@ variable "bastion_sg_description" {
 
 variable "bastion_start_range_ingress_port" {
   description = "Start range port for bastion ingress rules (or certain ports)"
+  type = "list"
   default     = [22]
 }
 
 variable "bastion_end_range_ingress_port" {
   description = "End range port for bastion ingress rules (or certain ports)"
+  type = "list"
   default     = [22]
 }
 
@@ -83,7 +85,8 @@ variable "bastion_ingress_protocol" {
 
 variable "bastion_ingress_cidr_blocks" {
   description = "List of ingress cidr blocks for ingress rules"
-  default     = ["213.184.243.0/24", "217.21.56.0/24", "217.21.63.0/24", "213.184.231.0/24", "86.57.255.88/29", "194.158.197.0/29"]
+  type = "list"
+  
 }
 
 variable "bastion_start_range_egress_port" {
@@ -110,22 +113,21 @@ variable "bastion_egress_cidr_blocks" {
 
 variable "vpc_sg_name" {
   description = "Name of security group for all instances in private network."
-  default     = "vpc_sg"
 }
 
 variable "vpc_sg_description" {
   description = "Description for vpc security group."
-  default     = "Allow 22, 80 and 443 ports inside private network"
 }
 
 variable "vpc_start_range_ingress_port" {
   description = "Start range port for ingress rules in private network (or certain ports)"
-  default     = [22, 80, 443, 8080]
+  type = "list"
+  
 }
 
 variable "vpc_end_range_ingress_port" {
   description = "End range port for ingress rules in private network (or certain ports)"
-  default     = [22, 80, 443, 8080]
+  type = "list"
 }
 
 variable "vpc_ingress_protocol" {
@@ -233,7 +235,6 @@ variable "jenkins_ami" {
 
 variable "jenkins_instance_type_ec2" {
   description = "The Instance Type."
-  default     = "t2.micro"
 }
 
 ########## General ELB variables ##########
@@ -287,11 +288,6 @@ variable "web_listen_lb_protocol" {
   default     = "http"
 }
 
-variable "web_elb_role" {
-  description = "ELB role"
-  default     = "elb-web"
-}
-
 variable "web_elb_health_check_target" {
   description = "The target of the check"
   default     = "HTTP:8080/"
@@ -326,7 +322,7 @@ variable "srv_elb_role" {
 
 variable "srv_elb_health_check_target" {
   description = "The target of the check"
-  default     = "HTTP:80/"
+  default     = "HTTP:8080/"
 }
 
 ########## General Auto Scaling variables ##########
