@@ -153,5 +153,16 @@ vpc_end_range_ingress_port = [22, 80, 8080]
 # The Instance Type for Jenkins server.
 jenkins_instance_type_ec2 = "t2.micro" 
 
+    ### ELK server ###
+
+# # Number of instance for ELK server. Default - 1
+# elk_instance_count = 1
+
+# # AWS AMI for ELK server. Default ami-a4c7edb2
+# elk_ami = "ami-a4c7edb2"
+
+# The Instance Type for ELK server.
+elk_instance_type_ec2 = "t2.medium" 
+
 
 

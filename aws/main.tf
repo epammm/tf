@@ -224,9 +224,6 @@ module "elb_srv" {
   role                  = "elb-srv"
 }
 
-
-
-
 #Create Cloud Watch HTTP request count alarm
 module "srv_requests_alarm" {
   source                = "./modules/elb_cw"
@@ -245,4 +242,27 @@ module "srv_requests_alarm" {
   alarm_description     = "${var.srv_request_alarm_description}"
   alarm_actions         = "${module.asg_web.increase_policy}"
   ok_actions            = "${module.asg_web.decrease_policy}"
+}
+
+# Create instance for ELK
+module "ec2_elk" {
+  source             = "./modules/ec2_inst"
+  instance_count     = "${var.elk_instance_count}"
+  ami                = "${var.elk_ami}"
+  project_name       = "${var.project_name}"
+  environment        = "${var.environment}"
+  key_name           = "${module.key_pair.ec2_key_pair}"
+  instance_type      = "${var.elk_instance_type_ec2}"
+  subnet_id          = "${module.private_part.private_subnets}"
+  az                 = "${var.private_az}"
+  pub_ip_bool        = "false"
+  security_group_ids = ["${module.sg_ec2_vpc.aws_security_group}"]
+  role               = "elk"
+}
+
+# Add ELK to service elb
+module "elb_add_elk" {
+  source      = "./modules/elb_attach"
+  instance_id = "${module.ec2_elk.instance_id[0]}"
+  elb_id      = "${module.elb_srv.elb_id}"
 }

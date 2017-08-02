@@ -40,7 +40,7 @@ variable "private_az" {
 
 variable "public_subnets" {
   description = "List of public subnets."
-  default     = ["10.0.1.0/24"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_subnets" {
@@ -68,13 +68,13 @@ variable "bastion_sg_description" {
 
 variable "bastion_start_range_ingress_port" {
   description = "Start range port for bastion ingress rules (or certain ports)"
-  type = "list"
+  type        = "list"
   default     = [22]
 }
 
 variable "bastion_end_range_ingress_port" {
   description = "End range port for bastion ingress rules (or certain ports)"
-  type = "list"
+  type        = "list"
   default     = [22]
 }
 
@@ -85,8 +85,7 @@ variable "bastion_ingress_protocol" {
 
 variable "bastion_ingress_cidr_blocks" {
   description = "List of ingress cidr blocks for ingress rules"
-  type = "list"
-  
+  type        = "list"
 }
 
 variable "bastion_start_range_egress_port" {
@@ -121,13 +120,12 @@ variable "vpc_sg_description" {
 
 variable "vpc_start_range_ingress_port" {
   description = "Start range port for ingress rules in private network (or certain ports)"
-  type = "list"
-  
+  type        = "list"
 }
 
 variable "vpc_end_range_ingress_port" {
   description = "End range port for ingress rules in private network (or certain ports)"
-  type = "list"
+  type        = "list"
 }
 
 variable "vpc_ingress_protocol" {
@@ -234,6 +232,22 @@ variable "jenkins_ami" {
 }
 
 variable "jenkins_instance_type_ec2" {
+  description = "The Instance Type."
+}
+
+### ELK server ###
+
+variable "elk_instance_count" {
+  description = "Number of instance for ELK server"
+  default     = 1
+}
+
+variable "elk_ami" {
+  description = "AMI for ELK server"
+  default     = "ami-a4c7edb2"
+}
+
+variable "elk_instance_type_ec2" {
   description = "The Instance Type."
 }
 
